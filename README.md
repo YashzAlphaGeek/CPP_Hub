@@ -1,8 +1,8 @@
 # C++ Hub
 
-# Project Kick Start
+## Project Kick Start
 
-![]()
+![](https://github.com/YashzAlphaGeek/CPP_Hub/blob/master/ProjectKickStart/project_structure_with_cmake_deps.png)
 
 # Visualization Of Project Structure
 
