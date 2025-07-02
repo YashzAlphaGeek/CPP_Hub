@@ -1,47 +1,70 @@
-# Configuration for Doxygen for use with CMake
-# Only options that deviate from the default are included
-# To create a new Doxyfile containing all available options, call `doxygen -g`
+# Doxyfile for C++ Project
 
-#---------------------------------------------------------------------------
+#--------------------------------------------------------------------------- 
 # Project related configuration options
-#---------------------------------------------------------------------------
+#--------------------------------------------------------------------------- 
 DOXYFILE_ENCODING       = UTF-8
 PROJECT_NAME            = "C++ Project"
 PROJECT_NUMBER          = 1.0
-PROJECT_BRIEF           =
+PROJECT_BRIEF           = "Auto-generated documentation for C++ project"
 PROJECT_LOGO            =
-OUTPUT_DIRECTORY        = ./
+
+OUTPUT_DIRECTORY        = ./docs           # Output folder
 OUTPUT_LANGUAGE         = English
 MARKDOWN_SUPPORT        = YES
 
-#---------------------------------------------------------------------------
-# Configure Graphs
-#---------------------------------------------------------------------------
-HAVE_DOT               = YES
-INCLUDE_GRAPH          = YES
-
-#---------------------------------------------------------------------------
+#--------------------------------------------------------------------------- 
 # Build related configuration options
-#---------------------------------------------------------------------------
-EXTRACT_ALL             = YES
-RECURSIVE               = YES
-GENERATE_HTML           = YES
-GENERATE_LATEX          = NO
+#--------------------------------------------------------------------------- 
+EXTRACT_ALL             = YES               # Extract docs even without /** */
+RECURSIVE               = YES               # Scan subfolders recursively
 
-#---------------------------------------------------------------------------
-# Configuration options related to the input files
-#---------------------------------------------------------------------------
-INPUT                  =    ../src \
-INPUT                       ../include
-INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.cc \
-                         *.cpp \
-                         *.c++ \
-                         *.h \
-                         *.hpp \
-                         *.h++ \
-                         *.md \
-                         *.dox \
-                         *.doc \
-                         *.txt
+GENERATE_HTML           = YES               # Generate HTML output
+GENERATE_LATEX          = NO                # Skip LaTeX output (no PDFs)
+GENERATE_MAN            = NO                # No man pages
+GENERATE_RTF            = NO                # No RTF output
+GENERATE_XML            = NO                # No XML output
+
+#--------------------------------------------------------------------------- 
+# Input configuration
+#--------------------------------------------------------------------------- 
+INPUT                   = app src inc
+INPUT_ENCODING          = UTF-8
+FILE_PATTERNS           = *.c *.cc *.cpp *.c++ *.h *.hpp *.h++ *.md *.dox *.doc *.txt *.cmake
+
+#--------------------------------------------------------------------------- 
+# Source browsing options
+#--------------------------------------------------------------------------- 
+SOURCE_BROWSER          = YES               # Enable source browsing
+INLINE_SOURCES          = YES               # Inline source code in docs
+
+#--------------------------------------------------------------------------- 
+# Graphviz configuration (requires Graphviz installed and 'dot' in PATH)
+#--------------------------------------------------------------------------- 
+HAVE_DOT                = YES               # Enable Graphviz support
+DOT_PATH                =                       # (Optional) specify path to 'dot' executable if not in PATH
+DOT_NUM_THREADS         = 2                 # Use 2 threads for graph generation (adjust as needed)
+DOT_IMAGE_FORMAT        = svg                # Use SVG for scalable vector graphics output
+DOTFILE_DIR             = ./docs/dot_files   # Store .dot files here (optional)
+DOT_CLEANUP             = NO                 # Keep .dot files for inspection
+
+# Graph types to generate
+CLASS_DIAGRAMS          = YES               # Generate class diagrams
+INCLUDE_GRAPH           = YES               # Show include graphs for files
+INCLUDED_BY_GRAPH       = YES               # Show included-by graphs
+CALL_GRAPH              = YES               # Show call graphs (functions called by a function)
+CALLER_GRAPH            = YES               # Show caller graphs (functions calling a function)
+DIRECTORY_GRAPH         = YES               # Show directory-level graphs (project structure)
+UML_LOOK                = YES               # Use UML style for class diagrams (optional)
+
+#--------------------------------------------------------------------------- 
+# Miscellaneous
+#--------------------------------------------------------------------------- 
+QUIET                   = NO                # Show progress messages
+WARNINGS                = YES               # Show warnings for missing docs
+WARN_IF_UNDOCUMENTED    = YES               # Warn if undocumented entities
+
+#--------------------------------------------------------------------------- 
+# Tag file generation (for linking external docs, optional)
+#--------------------------------------------------------------------------- 
+GENERATE_TAGFILE        = ./docs/cpp_project.tag
