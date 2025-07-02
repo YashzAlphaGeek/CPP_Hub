@@ -12,10 +12,8 @@ def parse_cmake_for_subdirs(cmake_path):
     try:
         with open(cmake_path, 'r', encoding='utf-8') as f:
             content = f.read()
-            # Find all add_subdirectory commands, simple regex, assumes no nested parentheses
             matches = re.findall(r'add_subdirectory\s*\(\s*([^\s\)]+)', content, re.IGNORECASE)
             for m in matches:
-                # Remove quotes if present
                 subdir = m.strip('\"\'')
                 subdirs.append(subdir)
     except Exception:
@@ -29,11 +27,21 @@ def generate_dot_for_directory(root_dir, dot_file_path):
 
     cmake_nodes = {}  # path (relative from root) -> node_id
 
-    def add_node(name, label, shape="folder"):
+    def add_node(name, label, shape="folder", color=None, style=None):
         nonlocal node_id
         nid = f"node{node_id}"
         node_id += 1
-        nodes.append(f'{nid} [label="{escape_label(label)}" shape={shape}];')
+        attr = f'label="{escape_label(label)}" shape={shape} margin=0.2 fontsize=10'
+        if color:
+            attr += f' color="{color}"'
+            # For orange filled nodes, set font color black for visibility
+            if color.lower() == "orange":
+                attr += ' fontcolor="black"'
+            else:
+                attr += f' fontcolor="{color}"'
+        if style:
+            attr += f' style="{style}"'
+        nodes.append(f'{nid} [{attr}];')
         return nid
 
     def walk_dir(path, parent_id=None, rel_path=""):
@@ -54,12 +62,29 @@ def generate_dot_for_directory(root_dir, dot_file_path):
                 if os.path.isdir(full_path):
                     walk_dir(full_path, current_id, entry_rel_path)
                 else:
-                    file_id = add_node(entry, entry, "note")
-                    edges.append(f"{current_id} -> {file_id};")
+                    # Default style for files
+                    file_color = None
+                    file_style = None
 
                     if entry == CMAKE_FILE_NAME:
-                        # Store node_id with relative path key
+                        # Determine if this is the root/main CMakeLists.txt
+                        if entry_rel_path == CMAKE_FILE_NAME:
+                            # Root CMakeLists.txt - color it green and bold
+                            file_color = "darkgreen"
+                            file_style = "bold"
+                        else:
+                            # Child CMakeLists.txt files - orange and filled
+                            file_color = "orange"
+                            file_style = "filled"
+
+                        cmake_nodes[entry_rel_path] = None  # placeholder for node id
+
+                    file_id = add_node(entry, entry, "note", file_color, file_style)
+
+                    if entry == CMAKE_FILE_NAME:
                         cmake_nodes[entry_rel_path] = file_id
+
+                    edges.append(f"{current_id} -> {file_id};")
 
         except PermissionError:
             pass  # skip folders without permission
@@ -73,13 +98,10 @@ def generate_dot_for_directory(root_dir, dot_file_path):
         full_cmake_path = os.path.join(root_dir, cmake_rel_path)
         subdirs = parse_cmake_for_subdirs(full_cmake_path)
         for subdir in subdirs:
-            # Build relative path for the subdirectory's CMakeLists.txt
-            # The subdir path is relative to the directory containing this cmake file
             base_dir = os.path.dirname(cmake_rel_path)
             sub_cmake_rel_path = os.path.normpath(os.path.join(base_dir, subdir, CMAKE_FILE_NAME))
             if sub_cmake_rel_path in cmake_nodes:
                 sub_node_id = cmake_nodes[sub_cmake_rel_path]
-                # Add a dependency edge (e.g., with a different style/color)
                 edges.append(f'{cmake_node_id} -> {sub_node_id} [color=blue, label="add_subdirectory", fontcolor=blue];')
 
     with open(dot_file_path, "w") as f:
@@ -91,7 +113,7 @@ def generate_dot_for_directory(root_dir, dot_file_path):
         f.write("}\n")
 
 if __name__ == "__main__":
-    root_project_dir = "/home/yash/StructuringOfProjects"  # adjust your project path here
+    root_project_dir = "/home/yash/StructuringOfProjects"  # Adjust to your path
     output_dot_file = "project_structure_with_cmake_deps.dot"
     generate_dot_for_directory(root_project_dir, output_dot_file)
     print(f"DOT file generated: {output_dot_file}")

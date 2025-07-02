@@ -1,5 +1,9 @@
 # C++ Hub
 
+# Project Kick Start
+
+![]()
+
 # Visualization Of Project Structure
 
 This project includes tools and instructions to generate a visual graph of your project's folder structure **and** the dependencies between `CMakeLists.txt` files using Graphviz.
