@@ -14,6 +14,8 @@ This project includes tools and instructions to generate a visual graph of your 
 
 - **Python 3.x**  
 - **Graphviz** installed and accessible via the `dot` command
+- **CMake**
+- **make** (or a compatible alternative like `nmake` or Ninja on Windows)
 
 ---
 
@@ -34,6 +36,19 @@ This project includes tools and instructions to generate a visual graph of your 
     ```
 
 3. **View the generated image** (`project_structure_with_cmake_deps.png`) to inspect your project layout.
+
+---
+
+## Building the Project
+
+Follow these steps to build the project from source using `make` and `cmake`:
+
+```bash
+make prepare          # Cleans and creates the build directory
+cd build              # Navigate into the build directory
+cmake ..              # Generate CMake build files
+cmake .. -DCOMPILE_EXECUTABLE=ON   # (Optional) Enable additional compilation flags
+cmake --build .       # Build the project
 
 ---
 
