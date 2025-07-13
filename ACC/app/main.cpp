@@ -3,8 +3,16 @@
 #include <chrono>
 #include <thread>
 #include "../src/my_lib/my_lib.hpp"
+#include "project_info.hpp"
 
 int main() {
+
+    std::cout << "🔧 Build Info:\n";
+    std::cout << "Built: " << project_name << " version " << project_version
+              << " on " << project_build_date << " at " << project_build_time << "\n";
+    std::cout << "Author: " << project_author << " | License: " << project_license << "\n";
+    std::cout << "Repo: " << project_repository << "\n\n";
+
     acc::Vehicle car(3.0, 5.0); 
     acc::CruiseController controller(30.0); 
 
