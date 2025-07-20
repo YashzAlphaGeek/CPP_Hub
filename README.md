@@ -1,4 +1,4 @@
-#  Adaptive Cruise Control (ACC) Simulation – C++ Modern Project
+#  Adaptive Cruise Control Simulation Using Modern C++ 
 
 A lightweight simulation of an **Adaptive Cruise Control (ACC)** system written in **Modern C++ (C++17)**, demonstrating core automotive logic in a modular structure using `CMake`.
 

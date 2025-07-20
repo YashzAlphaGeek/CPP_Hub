@@ -7,6 +7,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(PROJECT_INFO_HEADER_DIR ${CMAKE_BINARY_DIR}/configured)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+
+
+option(ENABLE_TESTING "Enable a Unit Testing Build" ON)
+
+option(ENABLE_WARNINGS "Enable compiler warnings for a target" ON)
+option(ENABLE_WARNINGS_AS_ERRORS "Enable compiler warnings as errors" OFF)
+
+option(ENABLE_SANITIZE_ADDR "Enable address sanitizer" ON)
+option(ENABLE_SANITIZE_UNDEF "Enable undefined sanitizer" ON)
 
 # Configurable build options
 option(COMPILE_EXECUTABLE "Build the main ACC simulation executable" ON)
